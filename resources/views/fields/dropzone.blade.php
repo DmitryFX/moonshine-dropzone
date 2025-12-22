@@ -42,6 +42,7 @@
 		>
 			<div class="dz-preview dz_sizer" style="
 				display: none;
+				pointer-events: none;
 				width: {{ $thumbnail_w }}px;
 				aspect-ratio: {{ $thumbnail_aspect }};
 			"></div>
