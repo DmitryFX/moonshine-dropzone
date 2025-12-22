@@ -273,13 +273,13 @@ final class Dropzone extends Field
 	/**
 	 * Summary of uploadTo
 	 * @param mixed $base_dir
-	 * @param string|Callable $upload_path
+	 * @param string|callable $upload_path
 	 * @return Dropzone
 	 */
 	public function uploadTo(
 
 		?string $base_dir = '',
-		string|Callable $upload_path = ''
+		string|callable $upload_path = ''
 		
 	): Field
 	{
