@@ -1,6 +1,6 @@
 # MoonShine Dropzone
 
-**Dropzone.js** integration for the [MoonShine](https://github.com/laravel-moonshine) admin panel.
+**Dropzone.js** integration for the [MoonShine](https://github.com/moonshine-software/moonshine) admin panel.
 
 Based on the fork
 https://github.com/NicolasCARPi/dropzone
