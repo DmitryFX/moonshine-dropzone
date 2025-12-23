@@ -32,25 +32,21 @@ Registers Route /moonshine-dropzone
 php artisan vendor:publish --tag=moonshine-dropzone-assets
 ```
 
-> The assets are published to `public/vendor/moonshine-dropzone`.
-
 ---
 
 ## Usage
 
-- Add column to Model $casts as JSON.
+- Set column as JSON in Model $casts.
 - Add a field in your MoonShine resource:
 
 ```php
 use MoonShine\Dropzone\Fields\Dropzone;
 
-Dropzone::make( 'Images' )
-	->uploadTo( '/storage/', 'project_name' ) 
-	->maxFiles( 10 )
-	->layout( 'grid' ) 
-	->thumbnail( 200, 100, '4/3' )
-	->note('Maximum 10 images. Drag & drop to upload.');
+Dropzone::make( 'Images', 'images' )
+	->uploadTo( '', '/project_name/images' ) 
+	->maxFiles( 6 )
 ```
+- Saves a string in maxFiles( 1 ) mode and array in multiple files mode.
 
 
 

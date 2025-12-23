@@ -294,7 +294,6 @@
 }
 .dropzone_field .dropzone_dropzone.single_col .dz-preview {
   width: 100% !important;
-  max-width: 100% !important;
   min-width: 0;
 }
 .dropzone_field .dropzone_dropzone:has(> .dz_sizer:only-child) .dz_sizer {
