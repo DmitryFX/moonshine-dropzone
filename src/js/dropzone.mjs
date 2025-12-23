@@ -7,8 +7,8 @@ window.Dropzone_Field = function( root, settings ){
 
 	var cl = console.log;
 
-	cl(settings);
-	cl(settings.csrf_token);
+	// cl(settings);
+	// cl(settings.csrf_token);
 
 	
 	const existing_files_field = root.$refs['dropzone_existing_files_field'];
@@ -35,6 +35,11 @@ window.Dropzone_Field = function( root, settings ){
 							
 			previewTemplate: root.$refs['dropzone_file_preview_tpl'].innerHTML,
 			dictRemoveFile: 'Удалить',
+
+			dictMaxFilesExceeded: 'max_files',
+			dictResponseError: 'server_error',
+			dictInvalidFileType: 'file_type',
+			dictFileTooBig: 'file_size',
 
 			createImageThumbnails: true,
 			thumbnailWidth: settings.thumbnail_render_w,
@@ -81,7 +86,7 @@ window.Dropzone_Field = function( root, settings ){
 				
 		myDropzone.on( "removedfile", ( ) => {
 
-			Mark_Files_Exceeding_The_Limit();
+			Update_Error_Status();
 			Try_Uploading_Rejected_On_Remove();
 
 			Update_Existing_Files_Field();
@@ -91,17 +96,22 @@ window.Dropzone_Field = function( root, settings ){
 			Set_Container_Height();
 		});
 
-		// myDropzone.on( "error", ( file ) => {
-
-		// });
+		myDropzone.on( "error", ( file, msg ) => {
+			// cl(file)
+			// cl(msg)
+			// cl(type)
+			file.rejection_reasons.add( msg );
+		});
 
 
 		myDropzone.on("addedfile", file => {
 
+			// cl("addedfile")
+
 			file.is_new = file.hasOwnProperty( 'upload' );
-			file.rejection_reasons = {};
-			cl('added:')
-			cl(file)
+			file.rejection_reasons = new Set();
+			// cl('added:')
+			// cl(file)
 			// file.previewElement.style[ 'width' ] = settings.thumbnail_w + 'px';
 			// file.previewElement.style[ 'aspect-ratio' ] = settings.thumbnail_aspect;
 
@@ -123,6 +133,8 @@ window.Dropzone_Field = function( root, settings ){
 						
 		myDropzone.on( "success", file => {
 
+			// cl("success")
+
 			try{
 
 				let response = JSON.parse( file.xhr.response );
@@ -135,6 +147,8 @@ window.Dropzone_Field = function( root, settings ){
 					file.stored_path = path;
 
 					file.previewElement.querySelector( ".progressbar" ).classList.add( '_hidden' );
+
+					file.rejection_reasons = new Set();
 
 					Update_Existing_Files_Field();
 
@@ -222,23 +236,71 @@ window.Dropzone_Field = function( root, settings ){
 		}
 
 	}
+
+	// function test(){
+
+	// 	file = {
+	// 		rejection_reasons: new Set([
+	// 			// 'max_files',
+	// 			// 'server_error',
+	// 			// 'other'
+	// 		])
+	// 	};
+
+	// 	function Allowed_Retry( file ){
+			
+	// 		const allowed_reasons = [ 'max_files', 'server_error' ];
+	// 		const keys = file.rejection_reasons.keys();
+
+	// 		return keys.every( key => allowed_reasons.includes( key ) );
+
+	// 	}
+
+	// 	cl('---------------');
+	// 	cl( Allowed_Retry( file ) );
+
+	// }
 				
-	
+	// test();
+
+	function Is_Allowed_Retry( file ){
+			
+		const allowed_reasons = [ 'max_files', 'server_error' ];
+		const keys = file.rejection_reasons.keys();
+
+		return keys.every( key => allowed_reasons.includes( key ) );
+
+	}
 
 	function Try_Uploading_Rejected_On_Remove(){
 			
 		// cl(myDropzone.files)
 		// return;
-		myDropzone.files.forEach( ( file, idx ) => {
+		const rejected_files = myDropzone.getRejectedFiles().filter( f => {
+			return Is_Allowed_Retry( f );
+		});
+		
+		// cl(rejected_files)
 
+		// rejected_files.forEach( f => {
+		// 	cl(Is_Allowed_Retry( f ))
+		// });
 
-			if( file.is_new === true && file.accepted === false ){
+		if( rejected_files.length !== 0 ){
+
+			let file = rejected_files[ 0 ];
+			
+			if( !file || !file.rejection_reasons ) return;
+
+			// const allowed_retry = Allowed_Retry( file );
+
+			if( file.is_new === true  ){
 
 				let copy = structuredClone( file );
 				myDropzone.removeFile( file );
 				myDropzone.addFile( copy );
 
-			} else if( file.is_new === false /*&& file.rejection_reasons[ 'max_files' ] === true*/ ){
+			} else if( file.is_new === false ){
 
 				let new_file = {
 					name: file.name,
@@ -261,22 +323,25 @@ window.Dropzone_Field = function( root, settings ){
 				
 			}
 
-		});
+		}
+	
 	}
 
-	function Mark_Files_Exceeding_The_Limit(){
+	function Update_Error_Status(){
+
+		// return;
 
 		myDropzone.files.forEach( ( file, idx ) => {
 
-			if( idx < settings.max_files ){
+			if( file.rejection_reasons.size === 0 ){
 
 				file.previewElement.classList['remove']( 'dz-error' );
-				file.rejection_reasons[ 'max_files' ] = false;
+				// file.rejection_reasons[ 'max_files' ] = false;
 
 			} else{
 
 				file.previewElement.classList['add']( 'dz-error' );
-				file.rejection_reasons[ 'max_files' ] = true;;
+				// file.rejection_reasons[ 'max_files' ] = true;;
 
 			}
 					
@@ -324,7 +389,7 @@ window.Dropzone_Field = function( root, settings ){
 		existing_files_field.value = files.join(',');
 
 		cl( 'Field value: ' );
-		cl( result );
+		cl( existing_files_field.value );
 
 	}
 
@@ -358,7 +423,7 @@ window.Dropzone_Field = function( root, settings ){
 
 		});
 				
-		Mark_Files_Exceeding_The_Limit();
+		Update_Error_Status();
 
 		// cl(myDropzone);
 		// cl(myDropzone.files);
@@ -424,17 +489,20 @@ window.Dropzone_Field = function( root, settings ){
 	
 	function Shrink_Columns(){
 
-		// return;
+		//  return;
+		if( !settings.reduce_empty_columns ) return;
+		// cl(settings.reduce_empty_columns)
 	
 		// var children_count = dropzone_el.querySelectorAll( '.dz-preview:not(.dz_sizer)' ).length;
+		//? -1 for the 'fake' sizer element.
 		var children_count = dropzone_el.children.length - 1;
 
 		if( /*children_count > 0 &&*/ children_count <= settings.dropzone_grid_max_columns ){
 			
-			let columns = Math.max( 1, children_count + settings.dropzone_grid_max_empty_columns );
+			let columns = Math.max( 1, children_count );
 		
 			dropzone_el.style[ 'grid-template-columns' ] =
-				`repeat( ${ Math.min( columns,  settings.dropzone_grid_max_columns ) }, ${ settings.thumbnail_w }px )`;
+				`repeat( ${ columns }, minmax( 0, ${ settings.thumbnail_w }px ) )`;
 				
 		}
 		

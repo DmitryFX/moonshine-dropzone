@@ -12,7 +12,7 @@
 	x-data='Dropzone_Data(@json( $DZ_CFG ))'
 	class="
 		dropzone_field
-		{{ $minimize_width ? 'minimize_width' : '' }}
+		{{ $minimize_component_width ? 'minimize_component_width' : '' }}
 	"
 	style="
 		min-width: min( {{  $thumbnail_w }}px, 100% );
@@ -43,7 +43,7 @@
 			<div class="dz-preview dz_sizer" style="
 				display: none;
 				pointer-events: none;
-				width: {{ $thumbnail_w }}px;
+				max-width: {{ $thumbnail_w }}px;
 				aspect-ratio: {{ $thumbnail_aspect }};
 			"></div>
 
@@ -54,7 +54,7 @@
 			<div
 				class="dz-preview dz-file-preview" 
 				style="
-					width: {{ $thumbnail_w }}px;
+					max-width: {{ $thumbnail_w }}px;
 					aspect-ratio: {{ $thumbnail_aspect }};
 				">
 

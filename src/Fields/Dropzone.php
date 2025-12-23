@@ -40,9 +40,9 @@ final class Dropzone extends Field
 	private string $base_dir;
 	private string $upload_path;
 
-	private bool $minimize_width;
+	private bool $minimize_component_width;
 	private int $dropzone_grid_max_columns;
-	private int $dropzone_grid_max_empty_columns;
+	private bool $reduce_empty_columns;
 
 	private bool $single_preview_maximize;
 	private string $preview_element_style;
@@ -69,10 +69,9 @@ final class Dropzone extends Field
 		$this->base_dir = Storage::url("");
 		$this->upload_path = '';
 
-		$this->minimize_width = false;
-		// $this->dropzone_layout = 'grid';
+		$this->minimize_component_width = false;
 		$this->dropzone_grid_max_columns = 3;
-		$this->dropzone_grid_max_empty_columns = 0;
+		$this->reduce_empty_columns = false;
 
 		$this->single_preview_maximize = false;
 		$this->preview_element_style = '';
@@ -207,11 +206,11 @@ final class Dropzone extends Field
 	 * @param mixed $max_empty_columns | allows to hide empty columns or keep e.g. 1 
 	 * @return Dropzone
 	 */
-	public function layout( ?int $max_columns = 3, ?int $max_empty_columns = 0, ?bool $minimize_width = false ): Field {
+	public function layout( int $max_columns = 3, bool $reduce_empty_columns = false, bool $minimize_component_width = false ): Field {
 
 		$this->dropzone_grid_max_columns = $max_columns;
-		$this->dropzone_grid_max_empty_columns = $max_empty_columns;
-		$this->minimize_width = $minimize_width;
+		$this->reduce_empty_columns = $reduce_empty_columns;
+		$this->minimize_component_width = $minimize_component_width;
 
 		return $this;
 	}
@@ -222,7 +221,7 @@ final class Dropzone extends Field
 	 * @param bool $value
 	 * @return Dropzone
 	 */
-	public function singlePreviewMaximize( bool $value ): Field {
+	public function singlePreviewMaximize( bool $value = false ): Field {
 
 		$this->single_preview_maximize = $value;
 
@@ -248,7 +247,7 @@ final class Dropzone extends Field
 	 * @param mixed $aspect | css aspect-ratio: 16/9;
 	 * @return Dropzone
 	 */
-	public function thumbnail( ?int $render_width, ?int $width = 100, ?string $aspect = '1/1' ): Field {
+	public function thumbnail( int $render_width, int $width = 100, string $aspect = '1/1' ): Field {
 
 		$this->thumbnail_w = $width;
 		$this->thumbnail_render_w = $render_width ?? $width * 1.6;
@@ -306,10 +305,10 @@ final class Dropzone extends Field
 				'base_dir'=> $this->base_dir,
 				'upload_path'=> $this->upload_path,
 
-				'minimize_width'=> $this->minimize_width,
+				'minimize_component_width'=> $this->minimize_component_width,
 				// 'dropzone_layout'=> $this->dropzone_layout,
 				'dropzone_grid_max_columns'=> $this->dropzone_grid_max_columns,
-				'dropzone_grid_max_empty_columns'=> $this->dropzone_grid_max_empty_columns,
+				'reduce_empty_columns'=> $this->reduce_empty_columns,
 
 				'single_preview_maximize'=> $this->single_preview_maximize,
 				'preview_element_style'=> $this->preview_element_style,

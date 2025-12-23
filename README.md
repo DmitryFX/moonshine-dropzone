@@ -9,12 +9,13 @@ https://github.com/dropzone/dropzone
 
 Keep in mind, that DZ is quite outdated lib, having tons of reported issues, but it's still a popular lightweight easily customizable library.
 
-Main features:
+**Description:**
 - minimalistic drag‑and‑drop or click-to-choose area
 - uploads immediately on file drop (may become an option in the future)
-- thumbnail generation for basic image files
-- simple text icon for unsupported formats
-- file remove confirmation
+- thumbnail generation for the basic image files
+- simple text icon for the unsupported formats
+- file removal confirmation
+- tries uploading rejected files (e.g. when we remove something and go below max files limit ). Currently only on Remove event.
 - currently not actually deleting files on the server
 
 ---
