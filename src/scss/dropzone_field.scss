@@ -81,7 +81,7 @@
 			.dz-preview{
 				// opacity: 0.4;
 				width: 100% !important;
-				// max-width: 100% !important;
+				max-width: 100% !important;
 				min-width: 0;
 			}
 		}
@@ -130,9 +130,9 @@
 			//display: flex;
 			// align-items: center;
 			// justify-content: center;
-
-			scale: 0.5;
-			opacity: 0;
+			scale: 1;
+			opacity: 1;
+			
 			user-select: none;
 
 			border-radius: var( --radius-lg );
@@ -141,11 +141,17 @@
 			transition:
 				opacity 0.2s ease,
 				scale 0.2s ease;
-				
-			&.visible{
-				scale: 1;
-				opacity: 1;
+
+
+			&.new_file_dropped{
+				scale: 0.5;
+				opacity: 0;
 			}
+				
+			// &.new_file_dropped{
+			// 	scale: 1;
+			// 	opacity: 1;
+			// }
 				
 			&.deleted_animation{
 				opacity: 0;

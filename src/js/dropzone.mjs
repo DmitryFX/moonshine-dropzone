@@ -107,17 +107,24 @@ window.Dropzone_Field = function( root, settings ){
 		myDropzone.on("addedfile", file => {
 
 			// cl("addedfile")
+			if( file.hasOwnProperty( 'upload' ) ){
+				
+				file.is_new = true;
 
-			file.is_new = file.hasOwnProperty( 'upload' );
+				file.previewElement.classList.add('new_file_dropped');
+
+				setTimeout( () => {
+					file.previewElement.classList.remove('new_file_dropped');
+				}, 50);
+			}
+			
+
 			file.rejection_reasons = new Set();
 			// cl('added:')
 			// cl(file)
 			// file.previewElement.style[ 'width' ] = settings.thumbnail_w + 'px';
 			// file.previewElement.style[ 'aspect-ratio' ] = settings.thumbnail_aspect;
 
-			setTimeout( () => {
-				file.previewElement.classList.add('visible');
-			}, 50);
 
 			file.previewElement.querySelector('.dz-remove-button').addEventListener("click", ( e ) => {
 							

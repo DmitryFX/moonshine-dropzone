@@ -54,7 +54,7 @@
 			<div
 				class="dz-preview dz-file-preview" 
 				style="
-					max-width: {{ $thumbnail_w }}px;
+					{{-- max-width: {{ $thumbnail_w }}px; --}}
 					aspect-ratio: {{ $thumbnail_aspect }};
 				">
 
