@@ -9,8 +9,6 @@ https://github.com/dropzone/dropzone
 
 ![screenshot](demo-1.png)
 
-<video controls src="demo-1.mp4" title="Title"></video> ![demo](demo-1.png)
-
 **Description:**
 - minimalistic drag‑and‑drop or click-to-choose area
 - uploads immediately on file drop (may become an option in the future)
