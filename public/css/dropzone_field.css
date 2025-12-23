@@ -304,14 +304,20 @@
   position: relative;
   height: auto;
   min-width: 0;
+  scale: 0.5;
+  opacity: 0;
   user-select: none;
   border-radius: var(--radius-lg);
   overflow: hidden;
   transition: opacity 0.2s ease, scale 0.2s ease;
 }
+.dropzone_field .dropzone_dropzone .dz-preview.visible {
+  scale: 1;
+  opacity: 1;
+}
 .dropzone_field .dropzone_dropzone .dz-preview.deleted_animation {
   opacity: 0;
-  scale: 0;
+  scale: 0.5;
 }
 .dropzone_field .dropzone_dropzone .dz-preview::before {
   scale: 0;

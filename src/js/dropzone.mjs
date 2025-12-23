@@ -115,6 +115,10 @@ window.Dropzone_Field = function( root, settings ){
 			// file.previewElement.style[ 'width' ] = settings.thumbnail_w + 'px';
 			// file.previewElement.style[ 'aspect-ratio' ] = settings.thumbnail_aspect;
 
+			setTimeout( () => {
+				file.previewElement.classList.add('visible');
+			}, 50);
+
 			file.previewElement.querySelector('.dz-remove-button').addEventListener("click", ( e ) => {
 							
 				Remove_File( file );
@@ -494,8 +498,9 @@ window.Dropzone_Field = function( root, settings ){
 		// cl(settings.reduce_empty_columns)
 	
 		// var children_count = dropzone_el.querySelectorAll( '.dz-preview:not(.dz_sizer)' ).length;
-		//? -1 for the 'fake' sizer element.
-		var children_count = dropzone_el.children.length - 1;
+		////? -1 for the 'fake' sizer element.
+		// var children_count = dropzone_el.children.length - 1;
+		var children_count = myDropzone.files.length;
 
 		if( /*children_count > 0 &&*/ children_count <= settings.dropzone_grid_max_columns ){
 			

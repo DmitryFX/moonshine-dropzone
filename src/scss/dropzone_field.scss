@@ -135,6 +135,8 @@
 			// align-items: center;
 			// justify-content: center;
 
+			scale: 0.5;
+			opacity: 0;
 			user-select: none;
 
 			border-radius: var( --radius-lg );
@@ -144,9 +146,14 @@
 				opacity 0.2s ease,
 				scale 0.2s ease;
 				
+			&.visible{
+				scale: 1;
+				opacity: 1;
+			}
+				
 			&.deleted_animation{
 				opacity: 0;
-				scale: 0;
+				scale: 0.5;
 			}
 
 			&::before{
