@@ -7,8 +7,6 @@ https://github.com/NicolasCARPi/dropzone
 of the original 
 https://github.com/dropzone/dropzone
 
-Keep in mind, that DZ is quite outdated lib, having tons of reported issues, but it's still a popular lightweight easily customizable library.
-
 **Description:**
 - minimalistic drag‑and‑drop or click-to-choose area
 - uploads immediately on file drop (may become an option in the future)

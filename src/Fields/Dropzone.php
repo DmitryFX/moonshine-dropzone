@@ -202,8 +202,9 @@ final class Dropzone extends Field
 	
 	/**
 	 * Dropzone area layout
-	 * @param mixed $max_columns | max thumbnails columns
-	 * @param mixed $max_empty_columns | allows to hide empty columns or keep e.g. 1 
+	 * @param int $max_columns | max thumbnails columns
+	 * @param bool $reduce_empty_columns | allows to hide empty columns or keep e.g. 1 
+	 * @param bool $minimize_component_width | component will shrink to contents
 	 * @return Dropzone
 	 */
 	public function layout( int $max_columns = 3, bool $reduce_empty_columns = false, bool $minimize_component_width = false ): Field {
@@ -244,7 +245,7 @@ final class Dropzone extends Field
 	 * Size of the thumbnails.
 	 * @param int $render_width | thumnbail 'intrinsic' size in pixels, affects visual quality
 	 * @param int $width | thumnbail element width in pixels
-	 * @param mixed $aspect | css aspect-ratio: 16/9;
+	 * @param string $aspect | css aspect-ratio e.g. '16/9';
 	 * @return Dropzone
 	 */
 	public function thumbnail( int $render_width, int $width = 100, string $aspect = '1/1' ): Field {
@@ -272,19 +273,19 @@ final class Dropzone extends Field
 	/**
 	 * Summary of uploadTo
 	 * @param mixed $base_dir
-	 * @param string|callable $upload_path
+	 * @param string $upload_path
 	 * @return Dropzone
 	 */
 	public function uploadTo(
 
 		?string $base_dir = '',
-		string|callable $upload_path = ''
+		string $upload_path = ''
 		
 	): Field
 	{
 
 		$this->base_dir = empty( $base_dir ) ? $this->base_dir : $base_dir;
-		$this->upload_path = is_callable( $upload_path ) ? $upload_path() : $upload_path;
+		$this->upload_path = $upload_path;
 
 		return $this;
 	}
