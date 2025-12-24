@@ -40,11 +40,11 @@ final class Dropzone extends Field
 	private string $base_dir;
 	private string $upload_path;
 
-	private bool $minimize_component_width;
+	private bool $compact_mode;
 	private int $dropzone_grid_max_columns;
 	private bool $reduce_empty_columns;
 
-	private bool $single_preview_maximize;
+	private bool $poster_mode;
 	private string $preview_element_style;
 
 	private int $thumbnail_w;
@@ -69,11 +69,12 @@ final class Dropzone extends Field
 		$this->base_dir = Storage::url("");
 		$this->upload_path = '';
 
-		$this->minimize_component_width = false;
+		$this->compact_mode = false;
 		$this->dropzone_grid_max_columns = 3;
 		$this->reduce_empty_columns = false;
 
-		$this->single_preview_maximize = false;
+		$this->poster_mode = false;
+		$this->compact_mode = false;
 		$this->preview_element_style = '';
 
 		$this->thumbnail_w = 100;
@@ -202,33 +203,43 @@ final class Dropzone extends Field
 	
 	/**
 	 * Dropzone area layout
-	 * @param int $max_columns | max thumbnails columns
-	 * @param bool $reduce_empty_columns | allows to hide empty columns or keep e.g. 1 
-	 * @param bool $minimize_component_width | component will shrink to contents
+	 * @param int $max_columns | max thumbnail columns
 	 * @return Dropzone
 	 */
-	public function layout( int $max_columns = 3, bool $reduce_empty_columns = false, bool $minimize_component_width = false ): Field {
+	public function layout( int $max_columns = 3 ): Field {
 
 		$this->dropzone_grid_max_columns = $max_columns;
-		$this->reduce_empty_columns = $reduce_empty_columns;
-		$this->minimize_component_width = $minimize_component_width;
+		//$this->reduce_empty_columns = $reduce_empty_columns;
+		
 
 		return $this;
 	}
 
 	/**
-	 * If Dropzone has only one item, make it fill the dropzone area.
-	 * 
-	 * @param bool $value
-	 * @return Dropzone
+	 * Maximize component and thumbnails width
+	 * @return static
 	 */
-	public function singlePreviewMaximize( bool $value = false ): Field {
+	public function posterMode(){
 
-		$this->single_preview_maximize = $value;
+		$this->poster_mode = true;
+		$this->compact_mode = false;
+
+		return $this;
+	}
+	
+	/**
+	 * Minimize component width, reducing empty columns
+	 * @return static
+	 */
+	public function compactMode(){
+
+		$this->compact_mode = true;
+		$this->poster_mode = false;
 
 		return $this;
 	}
 
+	
 	/**
 	 * Upload immediately
 	 * @param bool $upload_on_drop
@@ -306,12 +317,11 @@ final class Dropzone extends Field
 				'base_dir'=> $this->base_dir,
 				'upload_path'=> $this->upload_path,
 
-				'minimize_component_width'=> $this->minimize_component_width,
-				// 'dropzone_layout'=> $this->dropzone_layout,
+			
 				'dropzone_grid_max_columns'=> $this->dropzone_grid_max_columns,
-				'reduce_empty_columns'=> $this->reduce_empty_columns,
-
-				'single_preview_maximize'=> $this->single_preview_maximize,
+				'poster_mode'=> $this->poster_mode,
+				'compact_mode'=> $this->compact_mode,
+				
 				'preview_element_style'=> $this->preview_element_style,
 
 				'thumbnail_w'=> $this->thumbnail_w,

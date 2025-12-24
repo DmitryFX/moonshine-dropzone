@@ -500,8 +500,9 @@ window.Dropzone_Field = function( root, settings ){
 	
 	function Shrink_Columns(){
 
-		//  return;
-		if( !settings.reduce_empty_columns ) return;
+		// return;
+
+		if( !settings.compact_mode ) return;
 		// cl(settings.reduce_empty_columns)
 	
 		// var children_count = dropzone_el.querySelectorAll( '.dz-preview:not(.dz_sizer)' ).length;

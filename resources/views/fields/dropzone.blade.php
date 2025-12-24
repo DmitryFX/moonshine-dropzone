@@ -12,7 +12,8 @@
 	x-data='Dropzone_Data(@json( $DZ_CFG ))'
 	class="
 		dropzone_field
-		{{ $minimize_component_width ? 'minimize_component_width' : '' }}
+		{{ $poster_mode ? 'poster_mode' : '' }}
+		{{ $compact_mode ? 'compact_mode' : '' }}
 	"
 	style="
 		min-width: min( {{  $thumbnail_w }}px, 100% );
@@ -32,12 +33,9 @@
 			x-ref='dropzone_dropzone'
 			class="
 				dropzone_dropzone 
-				{{ $dropzone_grid_max_columns === 1 ? 'single_col' : '' }} 
-				{{ $single_preview_maximize ? 'single_preview_maximize' : '' }}
 			"
 			style="
 				grid-template-columns: repeat({{ $dropzone_grid_max_columns }}, minmax( 0, {{ $thumbnail_w }}px ) );
-				
 			" 
 		>
 			<div class="dz-preview dz_sizer" style="
@@ -54,7 +52,7 @@
 			<div
 				class="dz-preview dz-file-preview" 
 				style="
-					{{-- max-width: {{ $thumbnail_w }}px; --}}
+					max-width: {{ $thumbnail_w }}px;
 					aspect-ratio: {{ $thumbnail_aspect }};
 				">
 

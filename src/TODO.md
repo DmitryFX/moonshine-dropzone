@@ -9,7 +9,7 @@
 ##DZ Field:
 	- add editor |
 	- Better handling of 'accepted' state. E.g. setting rejection reason | +
-	- check maxc width for single col mode
+	- make coverMode()
 
 
 

@@ -4,6 +4,7 @@
 
 .dropzone_field{
 
+	position: relative;
 	display: grid;
 	// box-sizing: content-box;
 	
@@ -22,17 +23,31 @@
 	border-radius: var( --radius-lg );
 	border: 2px dashed rgb(209 213 219 / var(--tw-border-opacity, 1));
 
-	background-image: url( '../img/dropzone_icon.svg' );
+	
 
-	background-repeat: no-repeat;
-	background-position: center;
-	background-size: 50% 50%;
-
-	&.minimize_component_width{
+	&.compact_mode{
 		
 		// display: inline-grid !important;
 		width: max-content;
 		// margin-left: auto;
+	}
+
+	&.poster_mode{
+
+		.dropzone_dropzone{
+			grid-template-columns: 1fr !important;
+			
+			// min-width: unset !important;
+			// padding-bottom: unset;
+			
+
+			.dz-preview{
+				// opacity: 0.4;
+				width: 100% !important;
+				max-width: 100% !important;
+				min-width: 0;
+			}
+		}
 	}
 		//width: auto;
 
@@ -50,6 +65,8 @@
 	
 	.dropzone_dropzone{
 
+		// opacity: 0.2;
+
 		display: grid;
 
 		position: relative;
@@ -61,53 +78,27 @@
 
 		gap: 8px;
 
-		// grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)) !important;
+		&::after{
+			content: '';
 
-		// transition:
-		// 	width 0.2s ease,
-		// 	height 0.2s ease;
+			position: absolute;
+			// top: 50%; left: 50%;
+			// translate: -50% -50%;
+			inset: 0;
+			margin: auto; 
 
-		
-		//background-size: 32px 32px;
+			width: 48px;
+			height: 48px;
 			
-		&.single_col{
+			background-image: url( '../img/dropzone_icon.svg' );
 
-			grid-template-columns: 1fr !important;
-			// min-width: unset !important;
-			// padding-bottom: unset;
+			background-repeat: no-repeat;
+			background-position: center;
+			background-size: 100%;
 
-			
+			z-index: 0;
 
-			.dz-preview{
-				// opacity: 0.4;
-				width: 100% !important;
-				max-width: 100% !important;
-				min-width: 0;
-			}
 		}
-
-		// &._single_preview_maximize{
-
-
-		// 	&:has( > :only-child ){
-
-		// 		// opacity: 0.3;
-		// 		grid-template-columns: 1fr !important;
-
-		// 		.dz-preview{
-		// 			max-width: max-content;
-		// 			//width: 100% !important;
-		// 			// min-width: 100% !important;
-					
-		// 			// opacity: 0.5;
-		// 		}
-				
-		// 		.dz-thumbnail{
-		// 			//max-width: 100% !important;
-		// 		}
-		// 	}
-
-		// }
 
 		&:has(>.dz_sizer:only-child){
 
@@ -141,6 +132,8 @@
 			transition:
 				opacity 0.2s ease,
 				scale 0.2s ease;
+
+			z-index: 1;
 
 
 			&.new_file_dropped{
