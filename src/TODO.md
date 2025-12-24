@@ -7,10 +7,11 @@
 
 
 ##DZ Field:
-	- add editor |
+	- add basic photo editor |
 	- Better handling of 'accepted' state. E.g. setting rejection reason | +
-	- make coverMode()
-
+	- make coverMode() / posterMode() | +
+	- add sorting
+	- better error reporting and note/instruction message
 
 
 
