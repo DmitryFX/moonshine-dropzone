@@ -104,10 +104,11 @@ final class Dropzone extends Field
 		// Log::debug($this->getColumn());
 		// Log::debug($this->getVirtualColumn());
 		// Log::debug('----------------------');
+		// Log::debug($this->getResource());
 		if( empty( moonshineRequest()->getItemID() ) ){
 
-			$this->disabled_until_save = true;
-			
+			//$this->disabled_until_save = true;
+
 		}
 
 	}
