@@ -12,6 +12,7 @@
 	- make coverMode() / posterMode() | +
 	- add sorting
 	- better error reporting and note/instruction message
+	- !!!! Possible bug in afterApply - data_set may rewrite nested json fields with the same values
 
 
 

@@ -9,7 +9,9 @@ use Closure;
 use Illuminate\Support\Facades\Log;
 use MoonShine\AssetManager\Css;
 use MoonShine\AssetManager\Js;
+use MoonShine\Laravel\Traits\Request\HasPageRequest;
 use MoonShine\UI\Fields\Field;
+// use MoonShine\UI\Traits\HasResource;
 // use MoonShine\UI\Traits\Fields\WithDefaultValue;
 use Storage;
 
@@ -26,20 +28,26 @@ use Storage;
  * @method static static make(Closure|string|null $label = null, ?string $column = null, ?Closure $formatted = null)
  */
 final class Dropzone extends Field
-{
-
+{	
+	// use HasPageRequest;
+	// use HasResource;
 	// use WithDefaultValue;
 
 	protected string $view = 'moonshine-dropzone::fields.dropzone';
+	protected string $uid;
+
+	private bool $disabled_until_save = false;
 
 	private mixed $default_value;
 
 	private int $max_files;
 	private string $note;
 	private bool $upload_on_drop;
-	private string $base_dir;
-	private string $upload_path;
 
+	private string $base_dir;
+	private string|Closure $upload_path;
+	private string|null $temp_upload_path = null;
+	
 	private bool $compact_mode;
 	private int $dropzone_grid_max_columns;
 	private bool $reduce_empty_columns;
@@ -52,6 +60,8 @@ final class Dropzone extends Field
 	private float $thumbnail_aspect;
 
 
+
+	protected Closure $upload_path_cb;
 	
 	 public function __construct(
 		Closure|string|null $label = null,
@@ -59,10 +69,15 @@ final class Dropzone extends Field
 		?Closure $formatted = null,
 	) {
 		
+		parent::__construct( $label, $column, $formatted );
+		// $this->filterable(false);
+
 		$this->setLabel( $label );
 
 
 		//? Apply defaults
+		$this->uid = bin2hex( random_bytes( 3 ) );
+
 		$this->max_files = 9999;
 		$this->note = '';
 		$this->upload_on_drop = true;
@@ -80,12 +95,21 @@ final class Dropzone extends Field
 		$this->thumbnail_w = 100;
 		$this->thumbnail_render_w = 160;
 		$this->thumbnail_aspect = 1;
-
-
-		parent::__construct( $label, $column, $formatted );
+		 
+		 
+		// $this->removeAttribute('temp_path');
+		// $this->customAttributes(['temp' => 'temp']);
 		//debug($label);
 		// $this->default();
-		// debug($this->default_value);
+		// Log::debug($this->getColumn());
+		// Log::debug($this->getVirtualColumn());
+		// Log::debug('----------------------');
+		if( empty( moonshineRequest()->getItemID() ) ){
+
+			$this->disabled_until_save = true;
+			
+		}
+
 	}
 
 	protected function assets(): array
@@ -94,6 +118,13 @@ final class Dropzone extends Field
 			Css::make( asset( 'vendor/moonshine-dropzone/css/dropzone_field.css' ) ),
 			Js::make( asset( 'vendor/moonshine-dropzone/js/dropzone.min.js' ) ),
 		];
+	}
+
+	protected function booted(): void
+	{
+		parent::booted();
+
+		$this->refreshAfterApply();
 	}
 
 	public function default( string|array $default_value ){
@@ -123,8 +154,24 @@ final class Dropzone extends Field
 
 	}
 
+	// resolveOnBeforeApply()   // validation / prep
+	// resolveOnApply()         // set the value on the model instance
+	// Model->save()            // the new record is written to the DB
+	// resolveOnAfterApply()    // side‑effects (relationships, file uploads, etc.)
+
+	private function convertTempPath(){
+
+
+
+	}
+
 	protected function resolveValue(): mixed{
 
+
+		// Log::debug( $this );
+		// Log::debug( $this->value );
+		// Log::debug( ($this->upload_path_cb)() );
+		// Log::debug( get_object_vars($this) );
 		
 		$out = null;
 
@@ -146,7 +193,12 @@ final class Dropzone extends Field
    
 	protected function resolveOnApply(): ?Closure
 	{
+
 		return function (mixed $item): mixed {
+	
+			// Log::debug( 'resolveOnApply' );
+			// Log::debug( gettype($item) );
+			// Log::debug( $this->isCanApply() );
 			
 			$value = $this->getRequestValue();
 			$result = null;
@@ -172,18 +224,146 @@ final class Dropzone extends Field
 
 			}
 
+			// Log::debug( is_null( $result ) ? 'null' : $result );
+			// Log::debug( gettype( $item )  );
+			// Log::debug( $item  );
+			// Log::debug( $this->getColumn()  );
+
 			data_set($item, $this->getColumn(), $result );
 
 			return $item;
 		};
 	}
-	
-	// public function note( string $note ): Field {
 
-	// 	$this->note = $note;
+	// protected function resolveOnApply(): ?Closure
+	// {
+	// 	return function (Model $item): Model {
+	// 		$item->{$this->getColumn()} = $this->getRequestValue() !== false
+	// 			? $this->getRequestValue()
+	// 			: $this->generateSlug($item->{$this->getFrom()});
 
-	// 	return $this;
+	// 		if ($this->isUnique()) {
+	// 			$item->{$this->getColumn()} = $this->makeSlugUnique($item);
+	// 		}
+
+	// 		return $item;
+	// 	};
 	// }
+	
+	
+	public function afterApply( mixed $model ): mixed {
+
+		return $model;
+		// Log::debug( get_object_vars($this) );
+		// Log::debug( get_class_methods( moonshineRequest() ) );
+
+
+		// Log::debug( ( $this->upload_path_cb )( $model ) );
+		Log::debug( '****************************************' );
+		// Log::debug( moonshineRequest()->getItemID() );
+		$resourceId = request()->route('resourceItem'); 
+
+		    
+		Log::debug("Resource ID: " . $resourceId);
+		// Log::debug( $model);
+		// Log::debug(  $this->getDotNestedToName( $this->getColumn() ) );
+		// Log::debug( '----------------------' );
+		// Log::debug( get_class_methods( moonshineRequest() ) );
+		// Log::debug(  moonshineRequest()->getItemID()  );
+		// Log::debug( moonshineRequest()->getResource()->getItem() );
+		// Log::debug( $model?->getKey() );
+		// Log::debug( $this->getRequestNameDot() );
+		// Log::debug( ( $this->upload_path_cb )( $model ) );
+		// Log::debug( $this->upload_path );
+		// Log::debug( $model );
+		// Log::debug( data_get( request(), $this->getRequestNameDot() ) );
+
+		// return $model;
+		die;
+		// die;
+		// Log::debug( $this->upload_path );
+		// Log::debug( $model->getModel() );
+		if( false && is_callable( $this->upload_path_cb ) ){
+
+			// Log::debug( ( $this->upload_path_cb )( $model ) );
+			$column = $this->getColumn();
+			$temp_path = request( 'temp_upload_path__' . $column );
+			$new_path = ( $this->upload_path_cb )( $model );
+			
+			// Log::debug( 'name dot: ' .  $this->getRequestNameDot() );
+			// Log::debug( 'old path: ' . $temp_path );
+			// Log::debug( 'new path: ' . $new_path );
+			
+			// Log::debug( 'old value: ' .  request( $column ) );
+
+			// die;
+			// Log::debug( $column );
+			// Log::debug( '-------' );
+			// Log::debug( $this->value );
+			// Log::debug( '-------' );
+			// Log::debug( $model );
+			// Log::debug( '-------' );
+			// Log::debug( $model->wasRecentlyCreated );
+			// Log::debug( '-------' );
+			// Log::debug( $new_path );
+			// Log::debug( '--------------------------------------' );
+
+			// $str = "temp_media_c63f87\/cover_25-12-2025.png";
+			// Log::debug( preg_replace( '/temp_media.{6}/i', 'FFFFFFFFFF', $str) );
+
+			// die;
+			/*
+			if( is_array( $model ) ){
+
+				array_walk_recursive($model, function (&$value) {
+					
+					if( stristr( $value, 'temp_' ) ) {
+						$value = str_replace('temp_', 'FFFFFFFFFF', $value);
+					}
+				});
+
+				Log::debug( $model );
+
+			} else if( get_parent_class( $model ) == 'Illuminate\Database\Eloquent\Model' ){
+
+				// $model->set(  );
+				$data = data_get( $model, $column );
+
+				if( is_array( $data ) ){
+
+					array_walk_recursive( $data, function( &$value ) {
+
+						Log::debug( $value );
+					
+						if( stristr( $value, 'temp_media_' ) ) {
+							$value = preg_replace( '/temp__media/', 'FFFFFFFFFF', $value);
+						}
+					});
+
+				}
+
+				data_set( $model, $column, $data );
+				Log::debug( $model );
+			}*/
+
+			//data_set( $model, "*.$column",  );
+
+		}
+
+		// Log::debug( $model );
+		
+		// die;
+		// if( $this->getModel()->wasRecentlyCreated ){
+
+		// 	//data_set($model, $this->getColumn(), $result );
+
+		// }
+
+
+		return $model;
+	}
+
+	
 
 	/**
 	 * maxFiles = 1 saves String. Otherwise Array.
@@ -283,20 +463,38 @@ final class Dropzone extends Field
 
 	/**
 	 * Summary of uploadTo
-	 * @param mixed $base_dir
-	 * @param string $upload_path
+	 * @param string $base_dir | Static base dir, will not be saved. Default: Storage::url("") => "/storage/"
+	 * @param ?string $upload_path | Can be null for the new item, if ->getItemID() is used. Then it defaults to something like 'temp_mediapath_0e9cfd'. Dropzone will do the rename routine further. If set to '', DZ will upload to "/storage/".
 	 * @return Dropzone
 	 */
 	public function uploadTo(
 
-		?string $base_dir = '',
-		string $upload_path = ''
+		string $base_dir = '',
+		string|Closure $upload_path = ''
 		
 	): Field
 	{
+		$this->base_dir = 
+			!empty( $base_dir ) ? $base_dir : $this->base_dir;
+		
+		if( is_callable( $upload_path ) ){
 
-		$this->base_dir = empty( $base_dir ) ? $this->base_dir : $base_dir;
-		$this->upload_path = $upload_path;
+				$this->temp_upload_path = 'temp_media_' . $this->uid;
+				$this->upload_path = $this->temp_upload_path;
+				$this->upload_path_cb = Closure::fromCallable( $upload_path );
+
+		} else {
+
+			$this->upload_path = 
+				!empty( $upload_path ) ? $upload_path : $this->upload_path;
+
+		}
+
+
+		 
+		//  Log::debug(  moonshineRequest()->getResource()  );
+		//  Log::debug(  moonshineRequest()->getItemID()  );
+		// Log::debug( moonshineRequest()->getResource()->getItem() );
 
 		return $this;
 	}
@@ -307,8 +505,14 @@ final class Dropzone extends Field
 		// $this->csrf_token = csrf_token();
 		return [
 			...parent::systemViewData(),
-			'DZ_CFG' => [
 
+			// 'uid' => $this->uid,
+			'temp_upload_path__field_name' => 'temp_upload_path__' . $this->getColumn(),
+			'temp_upload_path'  => $this->temp_upload_path,
+			'disabled_until_save' => $this->disabled_until_save,
+
+			'DZ_CFG' => [
+				
 				'csrf_token' => csrf_token(),
 
 				'max_files'=> $this->max_files,

@@ -4,6 +4,9 @@
 	//$uid = $DZ_CFG['uid'];
 	$csrf_token = csrf_token();
 
+	//$attributes[ 'temp_path' ] = 'temp_path';
+
+	//Log::debug($attributes);
 @endphp
 
 
@@ -14,17 +17,24 @@
 		dropzone_field
 		{{ $poster_mode ? 'poster_mode' : '' }}
 		{{ $compact_mode ? 'compact_mode' : '' }}
+		{{ $disabled_until_save ? 'disabled' : '' }}
 	"
 	style="
 		min-width: min( {{  $thumbnail_w }}px, 100% );
-	"
->
+	">
+
+		<x-moonshine::form.input
+			type="hidden"
+			name="{{ $temp_upload_path__field_name  }}"
+			value="{{ $temp_upload_path }}"
+		/>
+
 	
 		<x-moonshine::form.input
 			type="hidden"
 			x-ref='dropzone_existing_files_field'
 			:attributes="$attributes->merge([
-				'value' => $value
+				'value' => $value,
 			])->except('x-bind:id')"
 		/>
 

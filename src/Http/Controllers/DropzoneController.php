@@ -33,7 +33,9 @@ class DropzoneController extends MoonShineController
 				$original_name = $file_info[ 'filename' ];
 				$original_ext = $file_info[ 'extension' ];
 
-				$new_name = Str::slug( $original_name ) . '_' . date('d-m-Y');
+				$hash = bin2hex( random_bytes( 3 ) );
+
+				$new_name = Str::slug( $original_name ) . '_' . $hash;// date('d-m-Y--H-i-s');
 
 				$resulting_basename = "{$new_name}.{$original_ext}";
 				$resulting_path = "{$path}/{$resulting_basename}";
