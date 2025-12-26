@@ -9,6 +9,7 @@ use Closure;
 use Illuminate\Support\Facades\Log;
 use MoonShine\AssetManager\Css;
 use MoonShine\AssetManager\Js;
+use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Laravel\Traits\Request\HasPageRequest;
 use MoonShine\UI\Fields\Field;
 // use MoonShine\UI\Traits\HasResource;
@@ -251,6 +252,16 @@ final class Dropzone extends Field
 	// 	};
 	// }
 	
+	protected function afterSave( mixed $item, FieldsContract $fields ): mixed{
+
+
+		Log::debug("Resource ID: " . $item);
+		Log::debug("Resource ID: " . $item);
+		Log::debug("Resource ID: " . $fields);
+		
+		return $item;
+
+	}
 	
 	public function afterApply( mixed $model ): mixed {
 

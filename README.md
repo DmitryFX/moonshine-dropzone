@@ -1,5 +1,7 @@
 # MoonShine Dropzone
 
+### CURRENTLY IN EARLY DEVELOPMENT STATE
+
 **Dropzone.js** integration for the [MoonShine](https://github.com/moonshine-software/moonshine) admin panel.
 
 Based on the fork
