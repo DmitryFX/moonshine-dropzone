@@ -12,7 +12,7 @@ use MoonShine\AssetManager\Js;
 use MoonShine\Contracts\Core\DependencyInjection\FieldsContract;
 use MoonShine\Laravel\Traits\Request\HasPageRequest;
 use MoonShine\UI\Fields\Field;
-// use MoonShine\UI\Traits\HasResource;
+use MoonShine\Core\Traits\HasResource;
 // use MoonShine\UI\Traits\Fields\WithDefaultValue;
 use Storage;
 
@@ -31,7 +31,7 @@ use Storage;
 final class Dropzone extends Field
 {	
 	// use HasPageRequest;
-	// use HasResource;
+	use HasResource;
 	// use WithDefaultValue;
 
 	protected string $view = 'moonshine-dropzone::fields.dropzone';
@@ -97,7 +97,11 @@ final class Dropzone extends Field
 		$this->thumbnail_render_w = 160;
 		$this->thumbnail_aspect = 1;
 		 
+
+		$uri = request()->route('resourceUri');
+		$resource = moonshine()->getResources()->findByUri($uri);
 		 
+		Log::debug( $resource?->getItemID() );
 		// $this->removeAttribute('temp_path');
 		// $this->customAttributes(['temp' => 'temp']);
 		//debug($label);
@@ -127,6 +131,9 @@ final class Dropzone extends Field
 		parent::booted();
 
 		$this->refreshAfterApply();
+
+		// Log::debug($this->hasResource() ? 'has' : 'not');
+		// Log::debug($this->hasResource());
 	}
 
 	public function default( string|array $default_value ){
@@ -482,7 +489,7 @@ final class Dropzone extends Field
 	public function uploadTo(
 
 		string $base_dir = '',
-		string|Closure $upload_path = ''
+		string|Closure|null $upload_path
 		
 	): Field
 	{
@@ -502,8 +509,11 @@ final class Dropzone extends Field
 
 		}
 
-
-		 
+		
+		// Log::debug(  $this->getResource()->getItemID()  );
+		// Log::debug(  moonshineRequest()->getResource()->getItemID()  );
+		
+		
 		//  Log::debug(  moonshineRequest()->getResource()  );
 		//  Log::debug(  moonshineRequest()->getItemID()  );
 		// Log::debug( moonshineRequest()->getResource()->getItem() );
