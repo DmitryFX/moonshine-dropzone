@@ -1,0 +1,11 @@
+.idea
+vendor
+composer.lock
+node_modules
+.phpunit.result.cache
+.php-cs-fixer.cache
+app
+reports
+_del
+_examples
+_img_work
