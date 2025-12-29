@@ -1,6 +1,6 @@
 # MoonShine Dropzone
 
-### CURRENTLY IN EARLY DEVELOPMENT STATE
+### CURRENTLY IN THE EARLY DEVELOPMENT STATE
 
 **Dropzone.js** integration for the [MoonShine](https://github.com/moonshine-software/moonshine) admin panel.
 
@@ -9,16 +9,20 @@ https://github.com/NicolasCARPi/dropzone
 of the original 
 https://github.com/dropzone/dropzone
 
+
 ![screenshot](demo.webp)
 
-**Description:**
+**Features**
 - Minimalistic drag‑and‑drop or click-to-choose area.
 - Uploads immediately on file drop (may become an option in the future).
-- Thumbnail generation for the basic image files.
+- Thumbnail generation for the very basic image files.
 - Simple text icon for the unsupported formats.
-- File removal confirmation.
+- In-place file removal confirmation.
 - Tries uploading rejected files (e.g. when we remove something and go below max files limit ). Currently only on Remove event.
 - Currently not actually deleting files on the server.
+
+- Zero composer dependencies (except moonshine itself, of course).
+- Allows using Model attributes to construct the upload path. Upload for the new Model items goes to temp path, which is renamed further on Model save.
 
 ---
 
