@@ -17,7 +17,6 @@
 		dropzone_field
 		{{ $poster_mode ? 'poster_mode' : '' }}
 		{{ $compact_mode ? 'compact_mode' : '' }}
-		{{-- {{ $disabled_until_save ? 'disabled' : '' }} --}}
 	"
 	style="
 		min-width: min( {{  $thumbnail_w }}px, 100% );

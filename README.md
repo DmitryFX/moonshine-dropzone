@@ -22,7 +22,7 @@ https://github.com/dropzone/dropzone
 - Currently not actually deleting files on the server.
 
 - Zero composer dependencies (except moonshine itself, of course).
-- Allows using Model attributes to construct the upload path. Upload for the new Model items goes to temp path, which is renamed further on Model save.
+- Allows using Model attributes to construct the upload path. Upload for the new Model items goes to temp path, which is renamed further on Model create.
 
 ---
 

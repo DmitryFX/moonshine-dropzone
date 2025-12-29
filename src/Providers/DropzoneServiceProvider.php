@@ -48,6 +48,7 @@ final class DropzoneServiceProvider extends ServiceProvider
                 $model_array =$model->toArray();
 
                 // Log::debug( $model_basename );
+                $bag = DropzoneBag::all();
                 // Log::debug( 'BAG_____________: ', DropzoneBag::all() );
 
 
@@ -114,7 +115,7 @@ final class DropzoneServiceProvider extends ServiceProvider
 
                         $new_path =$disk->path( $column_data[ 'path_callback' ]( $model ) );
  
-                        Log::debug( 'New dir_____________: ' . $new_path );
+                        // Log::debug( 'New dir_____________: ' . $new_path );
                         rename( $old_path, $new_path );
 
 
@@ -136,3 +137,4 @@ final class DropzoneServiceProvider extends ServiceProvider
       
     }
 }
+?>

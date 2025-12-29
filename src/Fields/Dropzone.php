@@ -189,12 +189,14 @@ final class Dropzone extends Field
 
 		return !stristr( $dot, '.' ) ?
 			$dot :
-			preg_replace_callback( '/(?<=\.)\d{1,3}(?=\.)/', fn( $val ) => intval($val)-1, $dot );
+			preg_replace_callback(
+				'/(?<=\.)(\d+)(?=\.)/',
+				fn($val) => max(0, intval($val[1]) - 1),
+				$dot
+			);
 
 	}
 
-	
-	
    
 	protected function resolveOnApply(): ?Closure
 	{
@@ -249,12 +251,12 @@ final class Dropzone extends Field
 				empty( moonshineRequest()->getResource()->getItemID() )
 			){
 
-				// Log::debug( 'not yet saved'  );
 
 				$model_name = class_basename( moonshineRequest()->getResource()->getModel() );
 				$name_dot = $this->dot_notation_hack( $this->getNameDot() );
 				$temp_path = request( "{$this->getColumn()}_temp_path" );
 
+				// Log::debug( $name_dot  );
 				
 				$bag_data = [
 					$model_name => [

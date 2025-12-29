@@ -1,7 +1,7 @@
 {
     "name": "dmitryfx/moonshine-dropzone",
     "description": "Dropzone.js - based file uploader for MoonShine",
-    "keywords": ["moonshine", "dropzone"],
+    "keywords": ["moonshine", "dropzone", "uploader"],
     "type": "library",
     "homepage": "https://dmitryfx.com",
     "license": "MIT",
