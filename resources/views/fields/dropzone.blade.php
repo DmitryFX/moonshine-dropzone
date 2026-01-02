@@ -12,7 +12,17 @@
 
 
 <div
-	x-data='Dropzone_Data(@json( $DZ_CFG ))'
+	x-data='{
+				init(){
+
+					this.$nextTick( () => {
+
+						Dropzone_Field( this, @json( $DZ_CFG ) );
+						
+					});
+
+				}
+			}'
 	class="
 		dropzone_field
 		{{ $poster_mode ? 'poster_mode' : '' }}
@@ -91,41 +101,13 @@
 					<div class="dz-filename">
 						<span data-dz-name></span>
 					</div>
-					<!-- <div class="dz-size" data-dz-size></div> -->
-
-					<!-- <span class="dz-upload" data-dz-uploadprogress="" style="width: 100%;"></span>
-					<div class="dz-success-mark"><span>✔</span></div>
-					<div class="dz-error-mark"><span>✘</span></div>
-					<div class="dz-error-message"><span data-dz-errormessage></span></div> -->
+					
 				</div>
 
 
 			</div>
 
 		</template>
-
-	<script>
-
-		window.addEventListener("alpine:init", () => {
-
-			Alpine.data( 'Dropzone_Data', (settings) => ({
-
-				init(){
-
-					this.$nextTick( () => {
-
-						Dropzone_Field( this, settings );
-						
-					});
-
-				}
-
-			}));
-
-		});
-
-		
-	</script>
 
 
 </div>
