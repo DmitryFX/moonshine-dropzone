@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace MoonShine\Dropzone\Providers;
 
-use Arr;
 use Event;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
-use Log;
-use MoonShine\Dropzone\Http\Controllers\DropzoneController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\ServiceProvider;
-use MoonShine\Laravel\Http\Middleware\Authenticate;
+use Log;
+use MoonShine\AssetManager\Css;
+use MoonShine\AssetManager\Js;
 use MoonShine\Dropzone\Helpers\DropzoneBag;
+use MoonShine\Dropzone\Http\Controllers\DropzoneController;
+use MoonShine\Laravel\Http\Middleware\Authenticate;
 // use Src\Helpers\DropzoneStorage;
 
 final class DropzoneServiceProvider extends ServiceProvider
@@ -26,7 +26,14 @@ final class DropzoneServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+		Log::debug('DropzoneServiceProvider');
         $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'moonshine-dropzone');
+
+		moonshineAssets()->prepend([
+
+			Css::make( asset( 'vendor/moonshine-dropzone/css/dropzone_field.css' ) ),
+			Js::make( asset( 'vendor/moonshine-dropzone/js/dropzone.min.js' ) )
+		]);
 
         Route::post('moonshine-dropzone', [ DropzoneController::class, 'dropzone'] )
            ->middleware(['moonshine', Authenticate::class])

@@ -9,10 +9,6 @@
 	//Log::debug($attributes);
 @endphp
 
-<script type="module" src="{{ asset( 'vendor/moonshine-dropzone/js/dropzone.min.js' ) }}"></script>
-<link rel="stylesheet" href="{{ asset( 'vendor/moonshine-dropzone/css/dropzone_field.css' ) }}">
-
-
 <div
 	x-data='{
 				async init(){
