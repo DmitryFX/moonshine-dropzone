@@ -9,17 +9,16 @@
 	//Log::debug($attributes);
 @endphp
 
-
+@asset( 'vendor/moonshine-dropzone/css/dropzone_field.css' )
+@asset( 'vendor/moonshine-dropzone/js/dropzone.min.js' )
 
 <div
 	x-data='{
-				init(){
+				async init(){
 
-					this.$nextTick( () => {
-
-						Dropzone_Field( this, @json( $DZ_CFG ) );
-						
-					});
+					await this.$nextTick();
+					
+					Dropzone_Field( this, @json( $DZ_CFG ) );
 
 				}
 			}'

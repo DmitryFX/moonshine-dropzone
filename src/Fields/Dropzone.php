@@ -119,10 +119,10 @@ final class Dropzone extends Field
 
 	protected function assets(): array
 	{
-		return [
-			Css::make( asset( 'vendor/moonshine-dropzone/css/dropzone_field.css' ) ),
-			Js::make( asset( 'vendor/moonshine-dropzone/js/dropzone.min.js' ) ),
-		];
+		// return [
+		// 	Css::make( asset( 'vendor/moonshine-dropzone/css/dropzone_field.css' ) ),
+		// 	Js::make( asset( 'vendor/moonshine-dropzone/js/dropzone.min.js' ) ),
+		// ];
 	}
 
 	public function default( string|array $default_value ){
