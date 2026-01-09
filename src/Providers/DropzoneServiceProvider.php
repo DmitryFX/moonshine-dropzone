@@ -26,13 +26,13 @@ final class DropzoneServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+		//Log::debug('DropzoneServiceProvider boot()');
 		moonshineAssets()->prepend([
 
 			Css::make( asset( 'vendor/moonshine-dropzone/css/dropzone_field.css' ) ),
 			Js::make( asset( 'vendor/moonshine-dropzone/js/dropzone.min.js' ) )
 		]);
 		
-		Log::debug('DropzoneServiceProvider');
         $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'moonshine-dropzone');
 
 
