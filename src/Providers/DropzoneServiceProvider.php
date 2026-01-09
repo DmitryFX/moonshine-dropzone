@@ -18,22 +18,23 @@ use MoonShine\Laravel\Http\Middleware\Authenticate;
 
 final class DropzoneServiceProvider extends ServiceProvider
 {
-    public function register(): void
-    {
+    // public function register(): void
+    // {
         
    
-    }
+    // }
 
     public function boot(): void
     {
-		Log::debug('DropzoneServiceProvider');
-        $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'moonshine-dropzone');
-
 		moonshineAssets()->prepend([
 
 			Css::make( asset( 'vendor/moonshine-dropzone/css/dropzone_field.css' ) ),
 			Js::make( asset( 'vendor/moonshine-dropzone/js/dropzone.min.js' ) )
 		]);
+		
+		Log::debug('DropzoneServiceProvider');
+        $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'moonshine-dropzone');
+
 
         Route::post('moonshine-dropzone', [ DropzoneController::class, 'dropzone'] )
            ->middleware(['moonshine', Authenticate::class])
@@ -41,8 +42,8 @@ final class DropzoneServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__ . '/../../public' => public_path('vendor/moonshine-dropzone'),
-        ], ['moonshine-dropzone-assets', 'laravel-assets']);
-
+        ]);
+		//, ['moonshine-dropzone-assets', 'laravel-assets']
         // function 
 
         Event::listen(
