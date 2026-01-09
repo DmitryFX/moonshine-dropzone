@@ -20,7 +20,7 @@ final class DropzoneServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        // $this->app->singleton( DropzoneStorage::class, fn () => new DropzoneStorage() );
+        
    
     }
 

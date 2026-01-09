@@ -3,6 +3,8 @@ import Dropzone from "@deltablot/dropzone";
 window.Dropzone = Dropzone;
 window.Dropzone.autoDiscover = false;
 
+console.log('Dropzone_Field loaded!');
+
 window.Dropzone_Field = function( root, settings ){
 
 	var cl = console.log;
