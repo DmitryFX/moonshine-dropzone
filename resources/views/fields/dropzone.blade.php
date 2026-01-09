@@ -9,8 +9,9 @@
 	//Log::debug($attributes);
 @endphp
 
-{{ asset( 'vendor/moonshine-dropzone/css/dropzone_field.css' ) }}
-{{ asset( 'vendor/moonshine-dropzone/js/dropzone.min.js' ) }}
+<script type="module" src="{{ asset( 'vendor/moonshine-dropzone/js/dropzone.min.js' ) }}"></script>
+<link rel="stylesheet" href="{{ asset( 'vendor/moonshine-dropzone/css/dropzone_field.css' ) }}">
+
 
 <div
 	x-data='{
